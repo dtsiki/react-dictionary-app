@@ -1,0 +1,51 @@
+@import './../../../styles/base/colors';
+@import './../../../styles/utils/mixins';
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: calc(var(--size) - 6px);
+    height: calc(var(--size) - 6px);
+    pointer-events: none;
+    content: '';
+    border: 3px solid $color--violet;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  &__label {
+    @include visually-hidden;
+  }
+
+  &--small {
+    --size: 20px;
+  }
+
+  &--medium {
+    --size: 50px;
+  }
+
+  &--big {
+    --size: 100px;
+  }
+}
