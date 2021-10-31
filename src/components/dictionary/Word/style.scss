@@ -1,0 +1,35 @@
+@import './../../../styles/base/colors';
+@import './../../../styles/utils/mixins';
+
+.word {
+  &__title {
+    margin-bottom: 20px;
+    display: block;
+    font-size: 60px;
+    font-weight: bold;
+    color: $color--white;
+  }
+
+  &__phonetic {
+    margin-bottom: 20px;
+    opacity: .8;
+    font-size: 30px;
+    font-style: italic;
+  }
+
+  &__definition {
+    margin-bottom: 20px;
+
+    &:nth-child(1) {
+      font-size: 25px;
+    }
+
+    &:nth-child(2) {
+      font-size: 22px;
+    }
+
+    &:nth-child(3) {
+      font-size: 19px;
+    }
+  }
+}
