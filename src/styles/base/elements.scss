@@ -2,6 +2,7 @@
 @import './../base/variables';
 @import './../utils/breakpoints';
 @import './../utils/mixins';
+@import './../base/typography';
 
 *,
 *::before,
@@ -40,7 +41,8 @@ ul {
 }
 
 body {
-  font-size: 16px;
+  font-family: Lora, sans-serif;
+  font-size: 14px;
   line-height: 1;
   color: $color--black;
   background-color: $color--white;

@@ -1,0 +1,31 @@
+@import './../../../styles/base/colors';
+@import './../../../styles/utils/mixins';
+
+.layout {
+  padding-top: 150px;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  background-color: $color--black;
+
+  &__heading {
+    margin-bottom: 20px;
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  &__content {
+    z-index: 2;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+    color: $color--white;
+  }
+
+  &__spinner {
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+  }
+}
