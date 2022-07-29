@@ -1,19 +1,12 @@
 @import './../../../styles/base/colors';
-@import './../../../styles/utils/mixins';
+@import './../../../styles/utils/breakpoints';
 
 .layout {
-  padding-top: 150px;
+  margin: 0 20px;
+  padding-top: 50px;
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
   align-items: center;
-  background-color: $color--black;
-
-  &__heading {
-    margin-bottom: 20px;
-    font-size: 40px;
-    font-weight: bold;
-  }
 
   &__content {
     z-index: 2;
@@ -23,9 +16,13 @@
     color: $color--white;
   }
 
-  &__spinner {
-    margin-bottom: 50px;
-    display: flex;
-    justify-content: center;
+  &--backdrop {
+    filter: blur(8px);
+  }
+
+  @include sm {
+    margin: 0;
+    padding-top: 150px;
+    min-height: 100vh;
   }
 }

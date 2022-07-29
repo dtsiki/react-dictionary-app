@@ -1,28 +1,32 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useStoreon } from 'storeon/react';
 
+import Header from './components/base/Header/Header';
 import Layout from './components/base/Layout';
 import Message from './components/base/Message';
 import Spinner from './components/base/Spinner';
+import Faved from './components/dictionary/Faved';
 import Overlay from './components/dictionary/Overlay/Overlay';
 import SearchForm from './components/dictionary/SearchForm';
 import Word from './components/dictionary/Word';
 import { getDefinitionByWord } from './services/dictionary';
 
 const App = () => {
-  const [definitions, setDefinitions] = useState('');
-  const [phonetic, setPhonetic] = useState('');
+  const { dispatch, words } = useStoreon('words');
+  const [searchValue, setSearchValue] = useState('');
+  const [error, setError] = useState(null);
+  const [isFavedOpened, showFaved] = useState(false);
   const [word, setWord] = useState({
     value: '',
-    localValue: '',
+    phonetic: '',
+    definitions: '',
   });
-
   const [status, setStatus] = useState({
     isWordLoaded: false,
     isFirstLoading: true,
     isWordChanged: false,
     isFailed: false,
   });
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchDefinition = async () => {
@@ -35,8 +39,11 @@ const App = () => {
           isFailed: true,
         }));
       } else {
-        setDefinitions(data[0].meanings[0].definitions);
-        setPhonetic(data[0].phonetic);
+        setWord((prevWord) => ({
+          ...prevWord,
+          phonetic: data[0].phonetic,
+          definitions: data[0].meanings[0].definitions,
+        }));
         setStatus((prevStatus) => ({
           ...prevStatus,
           isFailed: false,
@@ -52,26 +59,23 @@ const App = () => {
     };
 
     if (status.isLoading) fetchDefinition();
-  }, [status.isLoading]);
+  }, [status.isLoading, word.value]);
 
   const changeWord = useCallback((e) => {
     const value = e.target.value;
 
-    setWord((prevWord) => ({
-      ...prevWord,
-      localValue: value,
-    }));
+    setSearchValue(value);
   }, []);
 
   const searchWord = useCallback(
     (e) => {
       e.preventDefault();
 
-      if (!word.localValue) return;
+      if (!searchValue) return;
 
       setWord((prevWord) => ({
         ...prevWord,
-        value: word.localValue,
+        value: searchValue,
       }));
 
       setStatus((prevStatus) => ({
@@ -79,26 +83,42 @@ const App = () => {
         isLoading: true,
       }));
     },
-    [word]
+    [searchValue]
   );
 
+  const toggleWord = () => {
+    const values = words.map((word) => word.value);
+
+    if (word.value) {
+      if (values.indexOf(word.value) >= 0) {
+        dispatch('words/delete', word);
+      } else {
+        dispatch('words/add', word);
+      }
+    }
+  };
+
+  const showSaved = () => {
+    showFaved(!isFavedOpened);
+  };
+
   return (
-    <Layout>
-      <SearchForm word={word.localValue} searchWord={searchWord} changeWord={changeWord} />
-      {status.isLoading && (
-        <div className="layout__spinner">
-          <Spinner />
-        </div>
-      )}
-      {status.isLoaded && !status.isFailed && !status.isLoading && (
-        <Word word={word.value} phonetic={phonetic} definitions={definitions} />
-      )}
-      {status.isFirstLoading && !status.isLoading && (
-        <Message text="Enter any word in the input above to get word definition." />
-      )}
-      {status.isFailed && <Message title={error.title} text={error.message} />}
-      {status.isLoaded && <Overlay word={word.value} />}
-    </Layout>
+    <>
+      {isFavedOpened && <Faved handleFaved={showSaved} />}
+      <Layout isBackdrop={isFavedOpened}>
+        <Header handleFaved={showFaved} />
+        <SearchForm word={searchValue} searchWord={searchWord} changeWord={changeWord} />
+        <Spinner isVisible={status.isLoading} />
+        {status.isLoaded && !status.isFailed && !status.isLoading && (
+          <Word word={word.value} phonetic={word.phonetic} definitions={word.definitions} toggleWord={toggleWord} />
+        )}
+        {status.isFirstLoading && !status.isLoading && (
+          <Message text="Enter any word in the input above to get word definition." />
+        )}
+        {status.isFailed && <Message title={error.title} text={error.message} />}
+        {status.isLoaded && <Overlay word={word.value} />}
+      </Layout>
+    </>
   );
 };
 

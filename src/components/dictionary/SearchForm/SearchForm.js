@@ -1,11 +1,19 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import Input from '../../base/Input/Input';
 
 import './style.scss';
 
 const SearchForm = ({ searchWord, changeWord, word }) => {
+  const placeholderWords = ['croissant', 'yay', 'corgi', 'waterlemon', 'mountain', 'rainbow', 'cat', 'ocean'];
+
+  const getPlaceholder = useCallback(() => {
+    const word = placeholderWords[Math.floor(Math.random() * placeholderWords.length)];
+
+    return `Example: ${word}`;
+  }, [placeholderWords]);
+
   return (
     <form onSubmit={searchWord} className="form">
       <Input
@@ -14,7 +22,7 @@ const SearchForm = ({ searchWord, changeWord, word }) => {
         type="search"
         name="city"
         id="city"
-        placeholder="Example: bun"
+        placeholder={getPlaceholder()}
         label="Search word"
         inputClassName="form__input"
         labelClassName="form__label"

@@ -3,19 +3,17 @@ import React from 'react';
 
 import './style.scss';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, isBackdrop }) => {
   return (
-    <div className="layout">
-      <div className="layout__content">
-        <h1 className="layout__heading">Dictionary</h1>
-        {children}
-      </div>
+    <div className={`layout${isBackdrop ? ' layout--backdrop' : ''}`}>
+      <div className="layout__content">{children}</div>
     </div>
   );
 };
 
 Layout.propTypes = {
   children: PropTypes.node,
+  isBackdrop: PropTypes.bool,
 };
 
 export default Layout;
