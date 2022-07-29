@@ -1,5 +1,14 @@
 # React Dictionary app
 ### Overview
+React Dictionary is a dictionary application created using React.js, Free Dictionary API and Unsplash Image API.
+
+Note: this app doesn't use any API keys, you don't have to worry about creating your own.
+
+![alt text](https://raw.githubusercontent.com/dtsiki/react-dictionary-app/master/previews/initial.png "Dictionary initial screen")
+
+![alt text](https://raw.githubusercontent.com/dtsiki/react-dictionary-app/master/previews/word.png "Dictionary word definition screen")
+
+![alt text](https://raw.githubusercontent.com/dtsiki/react-dictionary-app/master/previews/faved.png "Dictionary favs")
 
 ### Installation
 Clone this repository:
